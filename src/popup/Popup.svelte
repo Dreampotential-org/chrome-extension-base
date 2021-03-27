@@ -12,7 +12,7 @@
 <style>
 	main {
 		min-width: 300px;
-		height: 300px;
+		height: 320px;
 		background: #333;
 		color: white;
 		display: flex;

@@ -63,16 +63,14 @@
         <input type="checkbox" bind:checked={audio} />
         <span>Record Audio</span>
     </label>
-    {#if audio}
-        <label for="echo-cancellation">
-            <input type="checkbox" bind:checked={echoCancellation} />
-            <span>Echo Cancellation</span>
-        </label>
-        <label for="noise-suppression">
-            <input type="checkbox" bind:checked={noiseSuppression} />
-            <span>Noise Suppression</span>
-        </label>
-    {/if}
+    <label for="echo-cancellation" class:hidden={!audio}>
+        <input type="checkbox" bind:checked={echoCancellation} />
+        <span>Echo Cancellation</span>
+    </label>
+    <label for="noise-suppression" class:hidden={!audio}>
+        <input type="checkbox" bind:checked={noiseSuppression} />
+        <span>Noise Suppression</span>
+    </label>
 </div>
 
 <div class="form info">
@@ -140,5 +138,8 @@
         border: none;
         cursor: pointer;
         border-radius: 3px;
+    }
+    .hidden {
+        visibility: hidden;
     }
 </style>

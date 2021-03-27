@@ -1,20 +1,16 @@
 <script lang="ts">
-    import { onMount } from "svelte";
+    import { user } from "./stores/main.store";
 
-    let isAuthenticated = false;
-
-    onMount(() => {
-        setTimeout(() => {
-            isAuthenticated = true;
-        }, 500);
-    });
+    function submit() {
+        user.set({});
+    }
 </script>
 
-{#if isAuthenticated}
+{#if $user}
     <slot />
 {:else}
     <h3>Login Dream Potential</h3>
-    <form on:submit|preventDefault>
+    <form on:submit|preventDefault={submit}>
         <label for="username">
             Username:
             <input type="text" name="username" />
