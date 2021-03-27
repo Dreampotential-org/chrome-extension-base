@@ -1,8 +1,13 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import { closeWindow } from "./helpers/main";
-
-    const bg: any = window["chrome"].extension.getBackgroundPage();
+    import { bg, closeWindow } from "./helpers/main";
+    import {
+        cancelUpload,
+        download,
+        recordingOptions,
+        startRecording,
+        stopRecording,
+    } from "./helpers/record";
 
     let mounted = false;
     let audio = true;
@@ -10,19 +15,29 @@
     let echoCancellation = true;
     let noiseSuppression = true;
     let status = 0;
+    let blob = null;
 
     onMount(() => {
+        status = bg.getStatusCode();
+        setInterval(() => {
+            blob = bg.downloadLastRecorded();
+            status = bg.getStatusCode();
+        }, 1000);
         const options = bg.getRecordingOptions();
-        audio = options.audio;
         video = options.video;
-        audio = mounted = true;
+        audio = !!options.audio;
+        if (typeof options.audio === "object") {
+            echoCancellation = !!options.audio["echoCancellation"];
+            noiseSuppression = !!options.audio["noiseSuppression"];
+        } else {
+            echoCancellation = noiseSuppression = true;
+        }
+        mounted = true;
     });
 
     $: if (mounted) {
-        bg.setRecordingOptions({
-            video: true,
-            audio: audio ? { echoCancellation, noiseSuppression } : false,
-        });
+        const options = audio && { echoCancellation, noiseSuppression };
+        recordingOptions.set(options);
     }
 </script>
 
@@ -70,11 +85,14 @@
 
     <div class="actions">
         {#if status === 0}
-            <button>Record</button>
+            {#if blob}
+                <button on:click={download}>Download Last</button>
+            {/if}
+            <button on:click={startRecording}>Record</button>
         {:else if status === 1}
-            <button on:click={bg.stopRecording}>Stop Recording</button>
+            <button on:click={stopRecording}>Stop Recording</button>
         {:else if status === 2}
-            <button>Cancel Upload {0}%</button>
+            <button on:click={cancelUpload}>Cancel Upload {0}%</button>
         {/if}
         <button on:click={closeWindow}>Close</button>
     </div>
