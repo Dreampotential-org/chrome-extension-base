@@ -1,6 +1,8 @@
 import { get } from "svelte/store";
 import { mediaStream, recorded, recorder, recording, recordingOptions } from "./background/main.store";
 
+const SERVER = `https://sfapp-api.dreamstate-4-all.org/`;
+
 const define: any = {
     onMount,
     startRecording,
@@ -55,10 +57,28 @@ async function startRecording() {
     }
 }
 
-function handleData(event) {
+async function handleData(event) {
     console.log("data-available");
     if (event.data.size > 0) {
         recorded.set(event.data);
+        const blob = event.data;
+
+        try {
+
+            const formData = new FormData();
+            formData.append('file', blob);
+            const response = await fetch(`${SERVER}s3_uploader/upload`, {
+                method: 'POST',
+                body: formData
+            });
+            const jsonResponse = await response.json();
+
+            console.log(jsonResponse);
+
+        } catch (error) {
+            console.error(error.message);
+        }
+
         console.log(get(recorded));
     } else {
         // ...
