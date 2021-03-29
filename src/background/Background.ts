@@ -47,8 +47,15 @@ export function cut() {
     recorder.set(null);
 }
 
+export function auth() {
+    return JSON.parse(localStorage.getItem("auth") || "null");
+}
+
 export async function upload(_blob: Blob) {
+    const _auth = auth();
+    if (!_auth) return console.log("not authenticated");
     try {
+        console.log(_blob);
         statusCode.set(2);
         blob.set(_blob);
         const controller = new AbortController();
@@ -59,9 +66,12 @@ export async function upload(_blob: Blob) {
         const response = await fetch(`${SERVER}s3_uploader/upload`, {
             method: 'POST',
             signal,
-            body: formData
+            headers: {
+                "Authorization": _auth.token
+            },
+            body: _blob
         });
-        const jsonResponse = await response.json();
+        const jsonResponse = await response.text();
         console.log(jsonResponse);
     } catch (error) {
         console.log(error.message);

@@ -1,8 +1,15 @@
 <script lang="ts">
-    import { user } from "./stores/main.store";
+    import { email, login, user } from "./stores/main.store";
 
-    function submit() {
-        user.set({});
+    let pending = false;
+    let password;
+
+    async function submit() {
+        pending = true;
+        const res = await login({ email: $email, password });
+        console.log(res);
+        password = "";
+        pending = false;
     }
 </script>
 
@@ -11,17 +18,23 @@
 {:else}
     <h3>Login Dream Potential</h3>
     <form on:submit|preventDefault={submit}>
-        <label for="username">
-            Username:
-            <input type="text" name="username" />
+        <label for="email">
+            Email:
+            <input type="text" required bind:value={$email} />
         </label>
 
         <label for="password">
             Password:
-            <input type="text" name="password" />
+            <input type="password" required bind:value={password} />
         </label>
 
-        <button type="submit">Login</button>
+        <button type="submit" disabled={pending}>
+            {#if pending}
+                ...
+            {:else}
+                Login
+            {/if}
+        </button>
     </form>
 {/if}
 

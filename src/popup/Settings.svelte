@@ -8,6 +8,7 @@
         startRecording,
         stopRecording,
     } from "./helpers/record";
+    import { logout } from "./stores/main.store";
 
     let mounted = false;
     let audio = true;
@@ -92,6 +93,7 @@
         {:else if status === 2}
             <button on:click={cancelUpload}>Cancel Upload {0}%</button>
         {/if}
+        <button on:click={logout}>Logout</button>
         <button on:click={closeWindow}>Close</button>
     </div>
 </div>
