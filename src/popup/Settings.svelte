@@ -9,6 +9,7 @@
         stopRecording,
     } from "./helpers/record";
     import { logout } from "./stores/main.store";
+    import { currentRoute } from "./stores/router.store";
 
     let mounted = false;
     let audio = true;
@@ -96,6 +97,12 @@
         <button on:click={logout}>Logout</button>
         <button on:click={closeWindow}>Close</button>
     </div>
+    <div class="actions">
+        <button
+            class="list-uploads-btn"
+            on:click={() => ($currentRoute = "/list")}>List</button
+        >
+    </div>
 </div>
 
 <style>
@@ -143,5 +150,9 @@
     }
     .hidden {
         visibility: hidden;
+    }
+    .list-uploads-btn {
+        width: 100px;
+        margin-bottom: 0.5rem;
     }
 </style>

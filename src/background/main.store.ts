@@ -2,6 +2,7 @@ import Store from "../common/Store";
 
 export const STATUS_KEY = "STATUS_CODE";
 export const OPTIONS_KEY = "RECORDING_OPTIONS";
+export const UPLOADS_KEY = "UPLOADS";
 export const SERVER = "https://sfapp-api.dreamstate-4-all.org/";
 
 export const blob = new Store(null);
@@ -14,6 +15,14 @@ export const recordOptions = new Store(JSON.parse(localStorage.getItem(OPTIONS_K
     audio: {
         echoCancellation: true,
         noiseSuppression: true,
+    }
+});
+
+export const uploads = new Store(JSON.parse(localStorage.getItem(UPLOADS_KEY) || "[]"));
+
+uploads.subscribe(uploads => {
+    if (uploads instanceof Array) {
+        localStorage.setItem(UPLOADS_KEY, JSON.stringify(uploads));
     }
 });
 
