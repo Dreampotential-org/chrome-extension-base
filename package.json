@@ -7,7 +7,7 @@
     "dev": "rollup -c -w",
     "start": "#sirv public --no-clear",
     "validate": "svelte-check",
-    "package": "google-chrome --pack-extension=public --pack-extension-key=key.pem"
+    "get-crx": "google-chrome --pack-extension=record-screen --pack-extension-key=record-screen.pem"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^17.0.0",
