@@ -24,19 +24,25 @@
 
   function deleteItem() {
     const id = item.id;
-    bg.log(bg.execCommand("DELETE_ITEM", { id }));
+    bg.execCommand("DELETE_ITEM", { id });
   }
 
+  let is_dbl_click_timeout = -1;
+
   function dblclick(event: MouseEvent) {
+    clearTimeout(is_dbl_click_timeout);
     const element = event.target as HTMLInputElement;
     editable = true;
     element.setSelectionRange(0, 0);
   }
 
   function click(event: MouseEvent) {
-    if (expand) {
-      if (!editable) active = "";
-    } else active = item.id;
+    clearTimeout(is_dbl_click_timeout);
+    is_dbl_click_timeout = setTimeout(() => {
+      if (expand) {
+        if (!editable) active = "";
+      } else active = item.id;
+    }, 100);
   }
 
   function upload() {
@@ -52,7 +58,7 @@
   }
 </script>
 
-<div class="item" on:blur={() => (expand = false)}>
+<div class="item">
   <div class="item-top">
     <input
       type="text"
@@ -64,8 +70,9 @@
       spellcheck="false"
       readonly={!editable}
       on:dblclick={dblclick}
-      on:click={click}
+      on:pointerup={click}
       on:blur={() => (editable = false)}
+      title="Double click to rename: {item.name}"
     />
     <button on:click={play} style={expand ? "opacity: 0;" : ""} title="Play">
       <svg

@@ -81,47 +81,51 @@ function getStatus() {
 }
 
 async function startRecording(audio: boolean = !!mic) {
-  if (getStatus() !== "idle") return { error: "STATUS NOT IDLE" };
+  try {
+    if (getStatus() !== "idle") return { error: "STATUS NOT IDLE" };
 
-  const name = `record_${new Date().getTime()}.webm`;
-  record = { id: name, name, created_at: new Date().getTime() };
+    const name = `record_${new Date().getTime()}.webm`;
+    record = { id: name, name, created_at: new Date().getTime() };
 
-  const screenStream: MediaStream = await navigator.mediaDevices[
-    "getDisplayMedia"
-  ]({
-    video: true,
-    audio: !!audio,
-  });
-
-  let videoTracks = screenStream.getVideoTracks();
-  let audioTracks = screenStream.getAudioTracks();
-
-  if (!!audio) {
-    const micStream = await navigator.mediaDevices.getUserMedia({
+    const screenStream: MediaStream = await navigator.mediaDevices[
+      "getDisplayMedia"
+    ]({
+      video: true,
       audio: !!audio,
     });
-    audioTracks = micStream.getAudioTracks();
+
+    let videoTracks = screenStream.getVideoTracks();
+    let audioTracks = screenStream.getAudioTracks();
+
+    if (!!audio) {
+      const micStream = await navigator.mediaDevices.getUserMedia({
+        audio: !!audio,
+      });
+      audioTracks = micStream.getAudioTracks();
+    }
+
+    const finalStream = new MediaStream([...audioTracks, ...videoTracks]);
+
+    status.set("recording");
+    currentStream = finalStream;
+    const recorder = new window["MediaRecorder"](finalStream, {
+      mimeType: "video/webm; codecs=vp9",
+    });
+    recorder.start();
+    recorder.ondataavailable = async ({ data: blob }: { data: Blob }) => {
+      await storage.write(blob, name);
+    };
+
+    // handle stop recording
+    const track = screenStream.getVideoTracks()[0];
+    track.addEventListener("ended", () => {
+      stopRecording(finalStream);
+      stopRecording(screenStream);
+    });
+    return name;
+  } catch (error) {
+    return console.log("Error:", error.message);
   }
-
-  const finalStream = new MediaStream([...audioTracks, ...videoTracks]);
-
-  status.set("recording");
-  currentStream = finalStream;
-  const recorder = new window["MediaRecorder"](finalStream, {
-    mimeType: "video/webm; codecs=vp9",
-  });
-  recorder.start();
-  recorder.ondataavailable = async ({ data: blob }: { data: Blob }) => {
-    await storage.write(blob, name);
-  };
-
-  // handle stop recording
-  const track = screenStream.getVideoTracks()[0];
-  track.addEventListener("ended", () => {
-    stopRecording(finalStream);
-    stopRecording(screenStream);
-  });
-  return name;
 }
 
 function stopRecording(stream: MediaStream) {
