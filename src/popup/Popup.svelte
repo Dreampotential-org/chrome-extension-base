@@ -1,12 +1,13 @@
 <script lang="ts">
   import { onMount } from "svelte";
-
   import { bg } from "./helpers/main";
   import List from "./List.svelte";
+  import Settings from "./Settings.svelte";
 
   let status = bg.execCommand("GET_STATUS") || "idle";
   let list: ListItem[] = bg.execCommand("GET_LIST");
   let mic = bg.execCommand("GET_MUTE") || false;
+  let settings = false;
 
   bg.onmessage = (message: MessageEvent) => {
     bg.log("message received:", message);
@@ -101,7 +102,7 @@
         </svg>
       {/if}
     </button>
-    <button>
+    <button on:click={() => (settings = true)}>
       <svg
         xmlns="http://www.w3.org/2000/svg"
         enable-background="new 0 0 24 24"
@@ -118,7 +119,11 @@
       </svg>
     </button>
   </div>
-  <List {list} />
+  {#if settings}
+    <Settings />
+  {:else}
+    <List {list} />
+  {/if}
 </main>
 
 <style>
