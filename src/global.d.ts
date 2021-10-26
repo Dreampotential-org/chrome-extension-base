@@ -1,18 +1,21 @@
-interface RecordOptionsAudio {
-    echoCancellation: boolean;
-    noiseSuppression: boolean;
-}
+export declare global {
+  type ExecCommand =
+    | "GET_STATUS"
+    | "START_REC"
+    | "STOP_REC"
+    | "GET_LIST"
+    | "DELETE_ITEM"
+    | "RENAME_ITEM"
+    | "DOWNLOAD_ITEM"
+    | "UPLOAD_ITEM"
+    | "PLAY_ITEM"
+    | "UNMUTE"
+    | "MUTE"
+    | "GET_MUTE";
 
-interface RecordOptions {
-    video: boolean;
-    audio: boolean | RecordOptionAudio;
-}
-
-interface Background {
-    log: (...args) => undefined;
-    startRecording: Function;
-    stopRecording: Function;
-    handleData: Function;
-    setRecordingOptions: (options: RecordOptions) => any;
-    getRecordingOption: () => RecordOptions;
+  interface ListItem {
+    id: string;
+    name: string;
+    created_at: number;
+  }
 }

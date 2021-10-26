@@ -1,84 +1,31 @@
 <script lang="ts">
-    import { bg } from "./helpers/main";
-    import { currentRoute } from "./stores/router.store";
+  import Item from "./Item.svelte";
 
-    interface Upload {
-        url: string;
-        at: Date;
-    }
+  export let list: ListItem[] = [];
 
-    let files: Upload[] = listUploads();
-
-    function listUploads() {
-        return JSON.parse(localStorage.getItem("UPLOADS") || "[]");
-    }
-
-    function openTab(url: string) {
-        window["chrome"].tabs.create({ url });
-    }
-
-    function getDate(timestamp) {
-        const date = new Date(timestamp);
-        const hours = date.getHours();
-        const minutes = `${date.getMinutes()}`.padStart(2, "0");
-        const seconds = `${date.getSeconds()}`.padStart(2, "0");
-        const dateString = date.toDateString();
-        return `${dateString} ${hours}:${minutes}:${seconds}`;
-    }
-
-    async function deleteVideo(url: string) {
-        if (url) {
-            await bg.deleteUpload(url);
-            files = listUploads();
-        }
-    }
-
-    $: if (files && files.length === 0) {
-        $currentRoute = "/";
-    }
+  let active = "";
 </script>
 
-<ul>
-    {#each files as file}
-        <li>
-            <span on:click={() => openTab(file.url)}>
-                {#if file.at}
-                    {getDate(file.at || new Date())}
-                {:else}
-                    {file.url.split("/").slice(-1)[0].slice(0, 20)}...
-                {/if}
-            </span>
-            <button class="del" on:click={() => deleteVideo(file.url)}>x</button
-            >
-        </li>
-    {/each}
-</ul>
+<div class="list">
+  {#each list.sort((a, b) => b.created_at - a.created_at) as item}
+    <Item {item} bind:active />
+  {/each}
+</div>
 
 <style>
-    ul {
-        list-style: none;
-        padding: 0;
-        margin: 0;
-    }
-    li {
-        font-size: 1.1rem;
-        background: #777;
-        margin: 0.25rem 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding-left: 0.3rem;
-    }
-    li * {
-        cursor: pointer;
-    }
-    .del {
-        padding: 0.4rem;
-        background: #555;
-        font-size: 1.3rem;
-        color: white;
-        border: none;
-        outline: none;
-        width: 2rem;
-    }
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    margin-top: 0.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .list::-webkit-scrollbar {
+    background: white;
+    width: 5px;
+  }
+  .list::-webkit-scrollbar-thumb {
+    background: #252525;
+  }
 </style>
