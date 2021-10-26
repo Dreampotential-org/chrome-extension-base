@@ -1,6 +1,6 @@
 {
-  "name": "svelte-app",
-  "version": "v0.0.2",
+  "name": "screen-record",
+  "version": "v0.0.3",
   "private": true,
   "scripts": {
     "build": "rollup -c",
