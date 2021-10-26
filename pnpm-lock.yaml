@@ -5,6 +5,7 @@ specifiers:
   '@rollup/plugin-node-resolve': ^11.0.0
   '@rollup/plugin-typescript': ^8.0.0
   '@tsconfig/svelte': ^1.0.0
+  idb-file-storage: ^0.1.0
   rollup: ^2.3.4
   rollup-plugin-css-only: ^3.1.0
   rollup-plugin-livereload: ^2.0.0
@@ -25,6 +26,7 @@ devDependencies:
   '@rollup/plugin-node-resolve': 11.2.0_rollup@2.42.4
   '@rollup/plugin-typescript': 8.2.0_c75bafaf95020c8442e2df27791d04f3
   '@tsconfig/svelte': 1.0.10
+  idb-file-storage: 0.1.0
   rollup: 2.42.4
   rollup-plugin-css-only: 3.1.0_rollup@2.42.4
   rollup-plugin-livereload: 2.0.0
@@ -377,6 +379,10 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+    dev: true
+
+  /idb-file-storage/0.1.0:
+    resolution: {integrity: sha1-PNmDAUXten5Xf61A5jq2pjF+uVU=}
     dev: true
 
   /import-fresh/3.3.0:

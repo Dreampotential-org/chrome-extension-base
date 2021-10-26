@@ -31,7 +31,7 @@ function serve() {
 }
 
 export default {
-	input: ['src/popup.ts', 'src/background.ts'],
+	input: ['src/popup/popup.ts', 'src/background/background.ts'],
 	output: {
 		sourcemap: true,
 		format: 'esm',

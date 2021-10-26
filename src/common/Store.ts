@@ -1,18 +1,18 @@
 import { writable, get } from "svelte/store";
 
-export default class Store {
-    set: (value) => void;
-    update: (updater) => void;
-    subscribe: (callback: Function) => Function;
+export default class Store<T> {
+  set: (value: T) => void;
+  update: (updater: (value: T) => T) => void;
+  subscribe: (callback: (value: T) => void) => Function;
 
-    constructor(value) {
-        const { set, update, subscribe } = writable(value);
-        this.set = set;
-        this.update = update;
-        this.subscribe = subscribe;
-    }
+  constructor(value: T = undefined) {
+    const { set, update, subscribe } = writable<T>(value);
+    this.set = set;
+    this.update = update;
+    this.subscribe = subscribe;
+  }
 
-    get() {
-        return get(<any>this);
-    }
+  get(): T {
+    return get(<any>this);
+  }
 }
