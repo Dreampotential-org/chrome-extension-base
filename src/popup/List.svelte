@@ -18,5 +18,14 @@
     flex-direction: column;
     gap: 0.25rem;
     margin-top: 0.5rem;
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  .list::-webkit-scrollbar {
+    background: white;
+    width: 5px;
+  }
+  .list::-webkit-scrollbar-thumb {
+    background: #252525;
   }
 </style>

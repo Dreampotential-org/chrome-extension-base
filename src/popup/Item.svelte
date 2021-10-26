@@ -67,7 +67,7 @@
       on:click={click}
       on:blur={() => (editable = false)}
     />
-    <button on:click={play} style={expand ? "opacity: 0;" : ""}>
+    <button on:click={play} style={expand ? "opacity: 0;" : ""} title="Play">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         height="24"
@@ -78,7 +78,7 @@
         <path d="M0 0h24v24H0z" fill="none" /><path d="M8 5v14l11-7z" />
       </svg>
     </button>
-    <button on:click={click}>
+    <button on:click={click} title={expand ? "Expand" : "Collapse"}>
       {#if expand}
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -106,7 +106,7 @@
   </div>
   {#if expand}
     <div class="expand">
-      <button on:click={play}>
+      <button on:click={play} title="Play">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24"
@@ -117,7 +117,7 @@
           <path d="M0 0h24v24H0z" fill="none" /><path d="M8 5v14l11-7z" />
         </svg>
       </button>
-      <button on:click={upload}>
+      <button on:click={upload} title="Upload">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24px"
@@ -130,7 +130,7 @@
           />
         </svg>
       </button>
-      <button on:click={download}>
+      <button on:click={download} title="Download">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24"
@@ -143,7 +143,7 @@
           />
         </svg>
       </button>
-      <button on:click={deleteItem}>
+      <button on:click={deleteItem} title="Delete">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           height="24"

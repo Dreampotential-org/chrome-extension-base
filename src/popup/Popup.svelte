@@ -131,6 +131,7 @@
     display: flex;
     flex-direction: column;
     padding: 1rem;
+    overflow: hidden;
   }
   .buttons {
     display: flex;
