@@ -83,7 +83,7 @@ window["execCommand"] = function (command: ExecCommand, options: any = {}) {
 window["execCommandAsync"] = function (command: ExecCommand, options: any = {}, callback: (result: any) => void) {
   switch (command) {
     case "UPLOAD_ITEM":
-      fetch(`http://localhost:3000/write-object-url/${options.id}`)
+      fetch(`${"process.env.SERVER"}/write-object-url/${options.id}`)
         .then((response) => response.json())
         .then((result) => {
           storage.read(options.id).then((blob) => {
@@ -101,7 +101,7 @@ window["execCommandAsync"] = function (command: ExecCommand, options: any = {}, 
         });
       return;
     case "COPY_URL":
-      fetch(`http://localhost:3000/read-object-url/${options.id}`)
+      fetch(`${"process.env.SERVER"}/read-object-url/${options.id}`)
         .then((response) => response.json())
         .then((result) => callback(result.url));
       return;
