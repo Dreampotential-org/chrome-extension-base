@@ -1,4 +1,4 @@
-import { list, status } from "./store";
+import { list, settings, status } from "./store";
 import Storage from "./Storage";
 
 window["log"] = function () {
@@ -9,7 +9,7 @@ let currentStream: MediaStream;
 let record: ListItem = undefined;
 let mic = false;
 
-let storage = new Storage(20 * 1024 ** 3);
+let storage = new Storage(settings.get().diskQuote);
 storage.init();
 window["storage"] = storage;
 
@@ -73,6 +73,10 @@ window["execCommand"] = function (command: ExecCommand, options: any = {}) {
       return;
     case "GET_MUTE":
       return mic;
+    case "GET_SETTINGS":
+      return settings.get();
+    case "SET_SETTINGS":
+      return settings.set(options);
   }
 };
 
@@ -87,12 +91,17 @@ async function startRecording(audio: boolean = !!mic) {
     const name = `record_${new Date().getTime()}.webm`;
     record = { id: name, name, created_at: new Date().getTime() };
 
-    const screenStream: MediaStream = await navigator.mediaDevices[
-      "getDisplayMedia"
-    ]({
-      video: true,
-      audio: !!audio,
-    });
+    const videoWidth = settings.get().videoWidth;
+    const screenStream: MediaStream =
+      await navigator.mediaDevices.getDisplayMedia({
+        video:
+          videoWidth > 0
+            ? {
+                width: videoWidth,
+              }
+            : true,
+        audio: !!audio,
+      });
 
     let videoTracks = screenStream.getVideoTracks();
     let audioTracks = screenStream.getAudioTracks();

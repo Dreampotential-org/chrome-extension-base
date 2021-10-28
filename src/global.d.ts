@@ -11,11 +11,18 @@ export declare global {
     | "PLAY_ITEM"
     | "UNMUTE"
     | "MUTE"
-    | "GET_MUTE";
+    | "GET_MUTE"
+    | "GET_SETTINGS"
+    | "SET_SETTINGS";
 
   interface ListItem {
     id: string;
     name: string;
     created_at: number;
+  }
+
+  interface Settings {
+    diskQuote: number;
+    videoWidth: number;
   }
 }
