@@ -5,7 +5,6 @@
   "scripts": {
     "build": "rollup -c",
     "dev": "rollup -c -w",
-    "start": "#sirv public --no-clear",
     "validate": "svelte-check",
     "get-crx": "google-chrome --pack-extension=record-screen --pack-extension-key=record-screen.pem"
   },
