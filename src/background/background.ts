@@ -108,12 +108,16 @@ async function startRecording(audio: boolean = !!mic) {
 
     status.set("recording");
     currentStream = finalStream;
-    const recorder = new window["MediaRecorder"](finalStream, {
+    const recorder = new window.MediaRecorder(finalStream, {
       mimeType: "video/webm; codecs=vp9",
     });
-    recorder.start();
+    recorder.start(5000);
+    let firstTime = true;
     recorder.ondataavailable = async ({ data: blob }: { data: Blob }) => {
-      await storage.write(blob, name);
+      console.log("writing", blob.size, recorder.state);
+      if (firstTime) await storage.write(blob, name);
+      else await storage.append(name, blob);
+      firstTime = false;
     };
 
     // handle stop recording

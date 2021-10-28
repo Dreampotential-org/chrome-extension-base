@@ -1,3 +1,5 @@
+import { getSeekableBlob } from "./helpers/getSeekableBlob";
+
 export default class Storage {
   private fs;
   quote: number;
@@ -47,6 +49,24 @@ export default class Storage {
     });
   }
 
+  append(filename, blob) {
+    this.fs.root.getFile(
+      filename,
+      { create: false },
+      function (fileEntry) {
+        // Create a FileWriter object for our FileEntry.
+        fileEntry.createWriter(
+          function (fileWriter) {
+            fileWriter.seek(fileWriter.length); // Start write position at EOF.
+            fileWriter.write(blob);
+          },
+          (error) => console.log(error.message)
+        );
+      },
+      (error) => console.log(error.message)
+    );
+  }
+
   read(filename: string): Promise<Blob> {
     return new Promise((resolve, reject) => {
       this.fs.root.getFile(
@@ -54,9 +74,13 @@ export default class Storage {
         {},
         function (entry) {
           entry.file(
-            async function (file) {
+            async function (file: File) {
               const buffer = await file.arrayBuffer();
-              resolve(new Blob([buffer]));
+              const blob = new Blob([buffer], { type: file.type });
+              if (file.type.match(/^(video)|(audio)\//)) {
+                return resolve(await getSeekableBlob(blob));
+              }
+              return resolve(blob);
             },
             (e) => reject(e.message)
           );
