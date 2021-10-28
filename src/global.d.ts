@@ -13,7 +13,9 @@ export declare global {
     | "MUTE"
     | "GET_MUTE"
     | "GET_SETTINGS"
-    | "SET_SETTINGS";
+    | "SET_SETTINGS"
+    | "GET_UPLOAD_PROGRESS"
+    | "COPY_URL";
 
   interface ListItem {
     id: string;
@@ -24,5 +26,9 @@ export declare global {
   interface Settings {
     diskQuote: number;
     videoWidth: number;
+  }
+
+  interface UploadStatus {
+    [id: string]: number;
   }
 }

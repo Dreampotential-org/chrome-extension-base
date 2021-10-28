@@ -2,13 +2,14 @@
   import Item from "./Item.svelte";
 
   export let list: ListItem[] = [];
+  export let uploadProgress: UploadStatus;
 
   let active = "";
 </script>
 
 <div class="list">
   {#each list.sort((a, b) => b.created_at - a.created_at) as item}
-    <Item {item} bind:active />
+    <Item {item} uploadProgress={uploadProgress[item.id]} bind:active />
   {/each}
 </div>
 

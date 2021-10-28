@@ -1,5 +1,6 @@
-import { list, settings, status } from "./store";
+import { list, settings, status, uploadStatus } from "./store";
 import Storage from "./Storage";
+import { upload } from "./helpers/upload";
 
 window["log"] = function () {
   console.log(...arguments);
@@ -54,11 +55,8 @@ window["execCommand"] = function (command: ExecCommand, options: any = {}) {
       });
       return;
     }
-    case "UPLOAD_ITEM":
-      return;
     case "PLAY_ITEM": {
       const id = options.id;
-      const item = list.get().find((item) => item.id === id);
       storage.read(id).then(async (blob) => {
         const url = URL.createObjectURL(new File([blob], "video.webm"));
         window["chrome"].tabs.create({ url: `play.html#${url}` });
@@ -77,6 +75,36 @@ window["execCommand"] = function (command: ExecCommand, options: any = {}) {
       return settings.get();
     case "SET_SETTINGS":
       return settings.set(options);
+    case "GET_UPLOAD_PROGRESS":
+      return uploadStatus.get();
+  }
+};
+
+window["execCommandAsync"] = function (command: ExecCommand, options: any = {}, callback: (result: any) => void) {
+  switch (command) {
+    case "UPLOAD_ITEM":
+      fetch(`http://localhost:3000/write-object-url/${options.id}`)
+        .then((response) => response.json())
+        .then((result) => {
+          storage.read(options.id).then((blob) => {
+            upload(
+              { blob, signedUrl: result.url },
+              (progress: number) => {
+                uploadStatus.update((status) => {
+                  status[options.id] = progress;
+                  return status;
+                });
+              },
+              (req, res) => {},
+            );
+          });
+        });
+      return;
+    case "COPY_URL":
+      fetch(`http://localhost:3000/read-object-url/${options.id}`)
+        .then((response) => response.json())
+        .then((result) => callback(result.url));
+      return;
   }
 };
 
@@ -92,16 +120,15 @@ async function startRecording(audio: boolean = !!mic) {
     record = { id: name, name, created_at: new Date().getTime() };
 
     const videoWidth = settings.get().videoWidth;
-    const screenStream: MediaStream =
-      await navigator.mediaDevices.getDisplayMedia({
-        video:
-          videoWidth > 0
-            ? {
-                width: videoWidth,
-              }
-            : true,
-        audio: !!audio,
-      });
+    const screenStream: MediaStream = await navigator.mediaDevices.getDisplayMedia({
+      video:
+        videoWidth > 0
+          ? {
+              width: videoWidth,
+            }
+          : true,
+      audio: !!audio,
+    });
 
     let videoTracks = screenStream.getVideoTracks();
     let audioTracks = screenStream.getAudioTracks();
