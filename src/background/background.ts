@@ -123,7 +123,6 @@ async function startRecording(audio: boolean = !!mic) {
     recorder.start(5000);
     let firstTime = true;
     recorder.ondataavailable = async ({ data: blob }: { data: Blob }) => {
-      console.log("writing", blob.size, recorder.state);
       if (firstTime) await storage.write(blob, name);
       else await storage.append(name, blob);
       firstTime = false;
