@@ -75,12 +75,10 @@ export default class Storage {
         function (entry) {
           entry.file(
             async function (file: File) {
-              const buffer = await file.arrayBuffer();
-              const blob = new Blob([buffer], { type: file.type });
-              if (file.type.match(/^(video)|(audio)\//)) {
-                return resolve(await getSeekableBlob(blob));
+              if (file.size / (1024 ** 2) <= 500 && file.type.match(/^(video)|(audio)\//)) {
+                return resolve(await getSeekableBlob(file));
               }
-              return resolve(blob);
+              return resolve(file);
             },
             (e) => reject(e.message)
           );
