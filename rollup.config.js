@@ -8,6 +8,7 @@ import typescript from "@rollup/plugin-typescript";
 import css from "rollup-plugin-css-only";
 import replace from "@rollup/plugin-replace";
 import { config } from "dotenv";
+import preprocess from 'svelte-preprocess';
 config();
 
 const production = !process.env.ROLLUP_WATCH;
@@ -22,7 +23,7 @@ export default {
   },
   plugins: [
     svelte({
-      preprocess: sveltePreprocess({ sourceMap: !production }),
+      preprocess: preprocess(),
       compilerOptions: {
         // enable run-time checks when not in production
         dev: !production,
