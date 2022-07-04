@@ -119,8 +119,7 @@ const switchScreen = ():void => {
             &:hover{
                 opacity: .6;
                 cursor: pointer;
-            }
-            
+            }  
         }
     }
  </style>
