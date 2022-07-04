@@ -1,5 +1,5 @@
 {
-  "name": "screen-record",
+  "name": "chrome-extension-base",
   "version": "v0.0.5",
   "private": true,
   "scripts": {
