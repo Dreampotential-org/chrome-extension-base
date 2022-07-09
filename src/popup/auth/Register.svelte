@@ -2,7 +2,8 @@
 import { fieldTypes, createRequestObjectAndResetErrors, setErrorResponses } from './functions/authFunctions';
 import axios from 'axios';
 export let baseUrl:string = 'valueInChild'
-export let authenticated:boolean = false
+export let authenticated:boolean = false;
+export let currentScreen:string = '';
 
 //console.log('Base URL:', baseUrl)
 
@@ -41,6 +42,10 @@ let registerFields: fieldTypes[] = [
       errorText: ""
    }
 ]
+
+const switchScreen = () : void => {
+    currentScreen = 'login'
+}
 
 const attemptRegister = () : void => {
    // console.log('Fields:', registerFields)
@@ -88,7 +93,15 @@ const getFieldValue = (event: Event, index: number) : void => {
 
 <main>
     <div class="auth-modal">
-        <div class="header">Create an account</div>
+        <div class="modal-header">
+            <button class="switch-screen" on:click={() => switchScreen()}>
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Pro 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license (Commercial License) Copyright 2022 Fonticons, Inc. -->
+                    <path d="M447.1 256C447.1 273.7 433.7 288 416 288H109.3l105.4 105.4c12.5 12.5 12.5 32.75 0 45.25C208.4 444.9 200.2 448 192 448s-16.38-3.125-22.62-9.375l-160-160c-12.5-12.5-12.5-32.75 0-45.25l160-160c12.5-12.5 32.75-12.5 45.25 0s12.5 32.75 0 45.25L109.3 224H416C433.7 224 447.1 238.3 447.1 256z"/>
+                </svg>
+            </button>
+            <div class="header">Create an account</div>
+        </div>
+       
       {#each registerFields as field, index}
         <div class="auth-group">
             <label for="input-field-{index}">{ field.label }</label>
@@ -109,4 +122,23 @@ const getFieldValue = (event: Event, index: number) : void => {
 
 <style lang="scss">
     @import "./css/auth.scss";
+
+    .switch-screen{
+        background: transparent;
+        border: 1px solid transparent;
+        font-size: 13px;
+        padding: 0;
+        margin-top: -15px;
+    
+        svg{
+            filter: $whiteFilter;
+            width: 15px;
+            height: 15px;
+        }
+
+        &:hover{
+            cursor: pointer;
+            opacity: .6;
+        }
+    }
  </style>

@@ -19,7 +19,7 @@ $: if (authenticated) {
     {#if currentScreen === "login"}
         <Login bind:baseUrl={baseUrl} bind:currentScreen={currentScreen} bind:authenticated={authenticated}/>  
     {:else}
-        <Register bind:baseUrl={baseUrl} bind:authenticated={authenticated}/>
+        <Register bind:baseUrl={baseUrl} bind:authenticated={authenticated} bind:currentScreen={currentScreen}/>
     {/if}
 
 </main>
