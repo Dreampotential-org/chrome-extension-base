@@ -3,23 +3,16 @@
   "name": "Screen Recorder",
   "description": "Chrome extension to record screen",
   "version": "0.0.5",
-  "browser_action": {
+  "action": {
     "default_icon": "favicon.png",
     "default_popup": "popup.html"
   },
-  "background": {
-    "page": "background.html"
-  },
-  "web_accessible_resources": ["background.html"],
-  "permissions": [
-    "activeTab",
-    "<all_urls>",
-    "webRequest",
-    "webRequestBlocking",
-    "unlimitedStorage",
-    "storage",
-    "tabCapture",
-    "desktopCapture"
+  "web_accessible_resources": [{
+    "resources": ["background.html"],
+    "matches": ["<all_urls>"]
+  }],
+  "host_permissions": [
+    "<all_urls>"
   ],
   "commands": {
     "toggle-recording": {
