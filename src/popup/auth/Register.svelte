@@ -141,16 +141,4 @@ const getFieldValue = (event: Event, index: number) : void => {
             opacity: .6;
         }
     }
-
-    .auth-modal{
-        .modal-header{
-        display: flex;
-        align-items: center;
-
-        .header{
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
-    }
  </style>
