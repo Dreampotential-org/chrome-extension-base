@@ -26,7 +26,6 @@
     "svelte": "^3.0.0",
     "svelte-check": "^1.0.0",
     "svelte-preprocess": "^4.10.7",
-    "sveltekit-adapter-chrome-extension": "^1.0.3-next.1",
     "tslib": "^2.0.0",
     "typescript": "^4.4.4"
   },

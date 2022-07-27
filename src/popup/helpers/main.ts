@@ -3,7 +3,6 @@ export const bg = window["chrome"].extension.getBackgroundPage() as Window & {
   execCommand: (command: ExecCommand, props?: { [x: string]: any }) => any;
   execCommandAsync: (command: ExecCommand, props: { [x: string]: any }, cb: (result: any) => any) => any;
 };
-console.log({ bg , 'extension' : window["chrome"]})
 
 export function log(...args) {
   bg.log(...args);
