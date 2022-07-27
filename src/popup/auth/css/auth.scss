@@ -2,7 +2,6 @@ $black: #000000;
 $white: #ffffff;
 $colorMain: rgb(0, 255, 203);
 $colorMainDark: rgb(11, 127, 110);
-$whiteFilter: invert(100%) sepia(65%) saturate(1099%) hue-rotate(167deg) brightness(129%) contrast(113%);
 
 .auth-modal{
     width: 100%;
@@ -14,17 +13,6 @@ $whiteFilter: invert(100%) sepia(65%) saturate(1099%) hue-rotate(167deg) brightn
     color: $white;
     display: flex;
     flex-direction: column;
-
-
-    .modal-header{
-        display: flex;
-        align-items: center;
-
-        .header{
-            margin-left: auto;
-            margin-right: auto;
-        }
-    }
 
     .header{
         font-size: 1rem;

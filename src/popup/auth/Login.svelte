@@ -107,7 +107,6 @@ const switchScreen = ():void => {
 
 <style lang="scss">
     @import "./css/auth.scss";
-    
 
     .signup-section{
         font-size: .75rem;
