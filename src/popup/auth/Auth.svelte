@@ -3,7 +3,7 @@ import Register from './Register.svelte';
 import Login from "./Login.svelte";
 export let authenticated:boolean = false
 
-let baseUrl:string = "https://api.dreampotential.org/s3_uploader/user";
+let baseUrl:string = "http://app.realtorstat.com:8021/";
 let currentScreen:string = "login"
 
 $: if (currentScreen) {

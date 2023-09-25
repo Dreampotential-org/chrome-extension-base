@@ -14,7 +14,7 @@ let loginFields: fieldTypes[] = [
    {
       label: "Email address",
       value: "",
-      name: "username",
+      name: "email",
       type: "text",
       placeholder: "Enter your email address",
       hasError: false,
@@ -52,7 +52,7 @@ const attemptLogin = () : void => {
     let requestObject = requestItems.requestObject;
     loginFields = requestItems.fields
 
-    axios.post(`${baseUrl}/login`, requestObject).then(response => {
+    axios.post(`${baseUrl}/usersystem/user/login`, requestObject).then(response => {
         buttonText = "Sign in";
         //console.log('User response:', response);
         localStorage.setItem('userToken', response.data.token)

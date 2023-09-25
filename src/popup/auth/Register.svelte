@@ -52,7 +52,7 @@ const attemptRegister = () : void => {
     buttonText = "Creating your account..."
     nonFieldError = ""
 
-    axios.post(`${baseUrl}/register/`, requestObject).then(response => {
+    axios.post(`${baseUrl}/usersystem/user/register`, requestObject).then(response => {
         buttonText = "Sign up";
        // console.log('User response:', response);
         localStorage.setItem('userToken', response.data.token)
