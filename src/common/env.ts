@@ -1,1 +1,1 @@
-export const SERVER = "http://app.realtorstat.com:8021/";
+export const SERVER = "https://api.dreampotential.org";
