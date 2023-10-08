@@ -83,22 +83,19 @@ window["execCommand"] = function (command: ExecCommand, options: any = {}) {
 window["execCommandAsync"] = function (command: ExecCommand, options: any = {}, callback: (result: any) => void) {
   switch (command) {
     case "UPLOAD_ITEM":
-      fetch(`${"process.env.SERVER"}/write-object-url/${options.id}`)
-        .then((response) => response.json())
-        .then((result) => {
-          storage.read(options.id).then((blob) => {
-            upload(
-              { blob, signedUrl: result.url },
-              (progress: number) => {
-                uploadStatus.update((status) => {
-                  status[options.id] = progress;
-                  return status;
-                });
-              },
+		storage.read(options.id).then((blob) => {
+			console.log("HERE is blog")
+			console.log(blog)
+			upload(blob,
+           (progress: number) => {
+            uploadStatus.update((status) => {
+            status[options.id] = progress;
+            return status;
+           });
+           },
               (req, res) => {},
             );
           });
-        });
       return;
     case "COPY_URL":
       fetch(`${"process.env.SERVER"}/read-object-url/${options.id}`)

@@ -2,3 +2,4 @@
 /record-screen/build/
 .DS_Store
 *.crx
+*.sw?
